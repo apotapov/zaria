@@ -27,11 +27,6 @@
       <version>0.9.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.roundtriangles.games</groupId>
-      <artifactId>gdx-artemis</artifactId>
-      <version>0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
