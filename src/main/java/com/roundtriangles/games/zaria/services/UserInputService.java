@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.roundtriangles.games.zaria.services.utils.InputEvent;
-import com.roundtriangles.games.zaria.services.utils.InputEvent.TouchType;
+import com.roundtriangles.games.zaria.services.utils.InputEvent.InputType;
 
 public class UserInputService implements InputProcessor {
 
@@ -20,7 +20,7 @@ public class UserInputService implements InputProcessor {
     protected Vector3 screenTouchPoint;
     protected Vector2 gameTouchPoint;
 
-    public UserInputService(Camera camera) {
+    public UserInputService() {
         eventBuffer = new Array<InputEvent>();
         eventList = new Array<InputEvent>();
 
@@ -30,12 +30,12 @@ public class UserInputService implements InputProcessor {
                 return new InputEvent();
             }
         };
-        this.camera = camera;
         this.screenTouchPoint = new Vector3();
         this.gameTouchPoint = new Vector2();
     }
 
-    public void initialize() {
+    public void initialize(Camera camera) {
+        this.camera = camera;
         Gdx.input.setInputProcessor(this);
     }
 
@@ -71,17 +71,17 @@ public class UserInputService implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return addTouchEvent(TouchType.TOUCH_DOWN, screenX, screenY, pointer);
+        return addTouchEvent(InputType.TOUCH_DOWN, screenX, screenY, pointer);
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return addTouchEvent(TouchType.TOUCH_UP, screenX, screenY, pointer);
+        return addTouchEvent(InputType.TOUCH_UP, screenX, screenY, pointer);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return addTouchEvent(TouchType.TOUCH_DRAG, screenX, screenY, pointer);
+        return addTouchEvent(InputType.TOUCH_DRAG, screenX, screenY, pointer);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class UserInputService implements InputProcessor {
         return false;
     }
 
-    protected boolean addTouchEvent(TouchType type, int x, int y, int pointer) {
+    protected boolean addTouchEvent(InputType type, int x, int y, int pointer) {
         synchronized (eventBuffer) {
             camera.unproject(screenTouchPoint.set(x, y, 0));
             gameTouchPoint.x = screenTouchPoint.x;
@@ -107,7 +107,7 @@ public class UserInputService implements InputProcessor {
         return true;
     }
 
-    protected InputEvent createTouchEvent(TouchType type, Vector2 touchPoint, int pointer) {
+    protected InputEvent createTouchEvent(InputType type, Vector2 touchPoint, int pointer) {
         InputEvent event = eventPool.obtain();
         event.setType(type);
         event.setPointer(pointer);

@@ -4,13 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class InputEvent implements Poolable {
-    public enum TouchType {
+    public enum InputType {
         TOUCH_DOWN,
         TOUCH_UP,
         TOUCH_DRAG
     }
 
-    private TouchType type;
+    private InputType type;
     private Vector2 touchPoint;
     private int pointer;
 
@@ -18,10 +18,10 @@ public class InputEvent implements Poolable {
         touchPoint = new Vector2();
     }
 
-    public TouchType getType() {
+    public InputType getType() {
         return type;
     }
-    public void setType(TouchType type) {
+    public void setType(InputType type) {
         this.type = type;
     }
     public Vector2 getTouchPoint() {
