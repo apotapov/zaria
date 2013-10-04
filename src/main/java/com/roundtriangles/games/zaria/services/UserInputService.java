@@ -39,16 +39,14 @@ public class UserInputService implements InputProcessor {
         Gdx.input.setInputProcessor(this);
     }
 
-    public void process() {
+    public Array<InputEvent> poll() {
         synchronized (eventBuffer) {
+            eventPool.freeAll(eventList);
             eventList.clear();
             eventList.addAll(eventBuffer);
             eventBuffer.clear();
+            return eventList;
         }
-    }
-
-    public Array<InputEvent> poll() {
-        return eventList;
     }
 
     @Override
@@ -103,13 +101,14 @@ public class UserInputService implements InputProcessor {
             gameTouchPoint.y = screenTouchPoint.y;
             InputEvent event = createTouchEvent(type, gameTouchPoint, pointer);
             eventBuffer.add(event);
+            return true;
         }
-        return true;
     }
 
     protected InputEvent createTouchEvent(InputType type, Vector2 touchPoint, int pointer) {
         InputEvent event = eventPool.obtain();
         event.setType(type);
+        event.setTouchPoint(touchPoint);
         event.setPointer(pointer);
         return event;
     }
