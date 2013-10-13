@@ -14,8 +14,6 @@ public abstract class AbstractLevel<T> implements Serializable, Disposable {
         this.name = name;
     }
 
-    public abstract void load();
-
     /**
      * Retrieves the ID of this object.
      */
