@@ -151,12 +151,12 @@ public class GraphicsService implements Disposable {
         return spriteArray;
     }
 
-    public Animation getAntimaion(String atlasName, String name) {
+    public Animation getAntimaion(String atlasName, String name, int playType) {
         Animation animation = null;
         if (!animationMap.containsKey(name)) {
             Array<Sprite> sprites = getSprites(atlasName, name);
             if (sprites != null) {
-                animation = new Animation(getAnimationDuration(name), sprites);
+                animation = new Animation(getAnimationDuration(name), sprites, playType);
                 animationMap.put(name, animation);
             }
         } else {
