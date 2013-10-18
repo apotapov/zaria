@@ -51,23 +51,27 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
 
     @Override
     public void resize(int width, int height) {
+        super.resize(width, height);
         Gdx.app.log(LOG_TAG, "Resizing to: " + width + "x" + height);
     }
 
     @Override
     public void pause() {
+        super.pause();
         Gdx.app.log(LOG_TAG, "Pause");
         soundService.pauseAll();
     }
 
     @Override
     public void resume() {
+        super.resume();
         Gdx.app.log(LOG_TAG, "Resume");
         soundService.play();
     }
 
     @Override
     public void dispose() {
+        super.dispose();
         Gdx.app.log(LOG_TAG, "Dispose");
         preferenceService.dispose();
         soundService.dispose();

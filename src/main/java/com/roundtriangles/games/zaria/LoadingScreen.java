@@ -71,5 +71,4 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
         super.dispose();
         splashTexture.dispose();
     }
-
 }
