@@ -1,7 +1,5 @@
 package com.roundtriangles.games.zaria.services.utils;
 
-import java.util.Map;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Disposable;
 import com.roundtriangles.games.zaria.services.GraphicsService;
@@ -25,14 +23,12 @@ public abstract class GameAssetLoader implements Disposable {
 
         this.graphicsService = graphicsManager;
         graphicsManager.setAssetManager(assetManager);
-        graphicsService.setAnimationDuration(getAnimationDurations());
 
         this.localeService = localeManager;
         localeManager.setAssetManager(assetManager);
     }
 
     protected abstract void loadAssets();
-    protected abstract Map<String, Float> getAnimationDurations();
 
     public void load() {
         loadAssets();

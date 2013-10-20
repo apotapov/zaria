@@ -19,11 +19,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class GraphicsService implements Disposable {
     private static final String LOG_TAG = GraphicsService.class.getSimpleName();
-
-    private static final float DEFAULT_ANIMATION_DURATION = 0.1f;
-
     private AssetManager assetManager;
-    private Map<String, Float> animationDuration;
     private Array<String> graphicalElements;
 
     private Map<String, Sprite> spriteMap;
@@ -31,9 +27,8 @@ public class GraphicsService implements Disposable {
     private Map<String, Array<Sprite>> spriteArrayMap;
     private Map<String, Animation> animationMap;
 
-    public GraphicsService(AssetManager assetManager, Map<String, Float> animationDuration) {
+    public GraphicsService(AssetManager assetManager) {
         this.assetManager = assetManager;
-        this.animationDuration = animationDuration;
         this.graphicalElements = new Array<String>();
         this.spriteMap = new HashMap<String, Sprite>();
         this.indexedSpriteMap = new HashMap<String, Map<Integer,Sprite>>();
@@ -42,15 +37,11 @@ public class GraphicsService implements Disposable {
     }
 
     public GraphicsService() {
-        this(null, null);
+        this(null);
     }
 
     public void setAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
-    }
-
-    public void setAnimationDuration(Map<String, Float> animationDuration) {
-        this.animationDuration = animationDuration;
     }
 
     @Override
@@ -151,25 +142,18 @@ public class GraphicsService implements Disposable {
         return spriteArray;
     }
 
-    public Animation getAntimaion(String atlasName, String name, int playType) {
+    public Animation getAntimaion(String atlasName, String name, int playType, float duration) {
         Animation animation = null;
         if (!animationMap.containsKey(name)) {
             Array<Sprite> sprites = getSprites(atlasName, name);
             if (sprites != null) {
-                animation = new Animation(getAnimationDuration(name), sprites, playType);
+                animation = new Animation(duration, sprites, playType);
                 animationMap.put(name, animation);
             }
         } else {
             animation = animationMap.get(name);
         }
         return animation;
-    }
-
-    protected float getAnimationDuration(String name) {
-        if (animationDuration != null && animationDuration.containsKey(name)) {
-            return animationDuration.get(name);
-        }
-        return DEFAULT_ANIMATION_DURATION;
     }
 
     public void loadTextures(String...textureList) {
