@@ -4,11 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Json.Serializable;
 import com.roundtriangles.games.zaria.services.utils.ProfileFactory;
 
 
-public class ProfileService<T extends Serializable> implements Disposable {
+public class ProfileService<T> implements Disposable {
 
     private static final String LOG_TAG = ProfileService.class.getSimpleName();
 
@@ -18,8 +17,9 @@ public class ProfileService<T extends Serializable> implements Disposable {
     private Json json;
 
     public ProfileService(ProfileFactory<T> factory) {
-        json = new Json();
         this.factory = factory;
+        this.json = new Json();
+        this.json.setSerializer(factory.getProfileClass(), factory);
     }
 
     public T retrieveProfile() {

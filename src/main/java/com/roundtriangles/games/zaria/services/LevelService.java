@@ -1,41 +1,40 @@
 package com.roundtriangles.games.zaria.services;
 
+import com.badlogic.gdx.assets.AssetLoaderParameters;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.roundtriangles.games.zaria.AbstractLevel;
 
 @SuppressWarnings("rawtypes")
-public class LevelService<T extends AbstractLevel> implements Disposable {
+public abstract class LevelService<T extends AbstractLevel> implements Disposable {
 
-    private final Array<T> levels;
+    protected final Array<T> levels;
+    protected final Class<T> levelClass;
+    protected AssetManager assetManager;
+
+    public abstract void load();
+    public abstract AsynchronousAssetLoader<T, AssetLoaderParameters<T>> getLevelLoader();
 
     /**
      * Creates the level manager.
      */
-    public LevelService() {
+    public LevelService(Class<T> levelClass) {
         levels = new Array<T>();
-    }
-
-    public void addLevel(T level) {
-        levels.add(level);
+        this.levelClass = levelClass;
     }
 
     /**
      * Retrieve all the available levels.
      */
-    public Array<T> getLevels() {
-        return levels;
-    }
-
-    /**
-     * Retrieve the level with the given id, or <code>null</code> if no such
-     * level exist.
-     */
-    public T findLevelById(int id) {
-        if (id < 0 || id >= levels.size) {
-            return null;
+    public T getLevel(String name) {
+        if (assetManager.isLoaded(name)) {
+            return assetManager.get(name, levelClass);
+        } else {
+            throw new GdxRuntimeException("Could not find specified level: " + name);
         }
-        return levels.get(id);
     }
 
     @Override
@@ -44,5 +43,12 @@ public class LevelService<T extends AbstractLevel> implements Disposable {
             levels.get(i).dispose();
         }
         levels.clear();
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
+        if (assetManager != null) {
+            this.assetManager.setLoader(levelClass, getLevelLoader());
+        }
     }
 }
