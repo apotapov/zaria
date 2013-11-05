@@ -5,4 +5,5 @@ import com.badlogic.gdx.utils.Disposable;
 public abstract class AbstractLevel<T> implements Disposable {
     public int id;
     public String name;
+    public T nextLevel;
 }

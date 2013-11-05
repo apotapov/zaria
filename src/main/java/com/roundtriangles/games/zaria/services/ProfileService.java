@@ -18,21 +18,19 @@ public class ProfileService<T> implements Disposable {
 
     public ProfileService(ProfileFactory<T> factory) {
         this.factory = factory;
-        this.json = new Json();
-        this.json.setSerializer(factory.getProfileClass(), factory);
+        this.json = factory.getJson();
     }
 
     public T retrieveProfile() {
         if (profile == null) {
             // create the handle for the profile data file
-            FileHandle profileDataFile = Gdx.files.local(dataFile);
+            FileHandle profileDataFile = Gdx.files.external(dataFile);
             Gdx.app.log(LOG_TAG,
                     "Retrieving profile from: " + profileDataFile.path());
 
             if (profileDataFile.exists()) {
                 try {
-                    String profileAsText = profileDataFile.readString().trim();
-                    profile = json.fromJson(factory.getProfileClass(), profileAsText);
+                    profile = json.fromJson(factory.getProfileClass(), profileDataFile);
                 } catch (Exception e) {
                     // log the exception
                     Gdx.app.error(LOG_TAG,
@@ -44,7 +42,7 @@ public class ProfileService<T> implements Disposable {
         // if unable to retrieve, create a new profile
         if (profile == null) {
             profile = factory.newProfile();
-            //persist(profile);
+            persist(profile);
         }
         return profile;
     }
@@ -53,16 +51,17 @@ public class ProfileService<T> implements Disposable {
      * Persists the given profile.
      */
     protected void persist(T profile) {
-        // create the handle for the profile data file
-        FileHandle profileDataFile = Gdx.files.local(dataFile);
-        Gdx.app.log(LOG_TAG,
-                "Persisting profile in: " + profileDataFile.path());
+        try {
+            // create the handle for the profile data file
+            FileHandle profileDataFile = Gdx.files.external(dataFile);
+            Gdx.app.log(LOG_TAG,
+                    "Persisting profile in: " + profileDataFile.path());
 
-        // convert the given profile to text
-        String profileAsText = json.toJson(profile);
-
-        // write the profile data file
-        profileDataFile.writeString(profileAsText, false);
+            // convert the given profile to text
+            json.toJson(profile, profileDataFile);
+        } catch (Exception e) {
+            Gdx.app.error(LOG_TAG, "Could not write profile file: " + dataFile, e);
+        }
     }
 
     public void persist() {
