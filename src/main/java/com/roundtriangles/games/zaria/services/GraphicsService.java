@@ -6,19 +6,24 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.roundtriangles.games.zaria.services.utils.FontDefinition;
 
 public class GraphicsService implements Disposable {
     private static final String LOG_TAG = GraphicsService.class.getSimpleName();
+
     private AssetManager assetManager;
     private Array<String> graphicalElements;
 
@@ -26,6 +31,7 @@ public class GraphicsService implements Disposable {
     private Map<String, Map<Integer, Sprite>> indexedSpriteMap;
     private Map<String, Array<Sprite>> spriteArrayMap;
     private Map<String, Animation> animationMap;
+    private ObjectMap<FontDefinition, BitmapFont> fontMap;
 
     public GraphicsService(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -34,6 +40,7 @@ public class GraphicsService implements Disposable {
         this.indexedSpriteMap = new HashMap<String, Map<Integer,Sprite>>();
         this.spriteArrayMap = new HashMap<String, Array<Sprite>>();
         this.animationMap = new HashMap<String, Animation>();
+        this.fontMap = new ObjectMap<FontDefinition, BitmapFont>();
     }
 
     public GraphicsService() {
@@ -78,6 +85,14 @@ public class GraphicsService implements Disposable {
             return assetManager.get(name, BitmapFont.class);
         } else {
             throw new GdxRuntimeException("Could not find specified skin: " + name);
+        }
+    }
+
+    public BitmapFont getFont(FontDefinition fd) {
+        if (fontMap.containsKey(fd)) {
+            return fontMap.get(fd);
+        } else {
+            throw new GdxRuntimeException("Specified font definition was not loaded: " + fd);
         }
     }
 
@@ -190,6 +205,29 @@ public class GraphicsService implements Disposable {
         for (String font : fonts) {
             assetManager.load(font, BitmapFont.class);
             graphicalElements.add(font);
+        }
+    }
+
+    public void loadFonts(FontDefinition...fonts) {
+
+        ObjectMap<String, FreeTypeFontGenerator> generators =
+                new ObjectMap<String, FreeTypeFontGenerator>();
+
+        for (FontDefinition fd : fonts) {
+            FreeTypeFontGenerator generator;
+            if (generators.containsKey(fd.path)) {
+                generator = generators.get(fd.path);
+            } else {
+                FileHandle fontFile = Gdx.files.internal(fd.path);
+                generator = new FreeTypeFontGenerator(fontFile);
+                generators.put(fd.path, generator);
+            }
+            fontMap.put(fd, generator.generateFont(fd.size));
+        }
+
+        // clean up
+        for (FreeTypeFontGenerator generator : generators.values()) {
+            generator.dispose();
         }
     }
 
