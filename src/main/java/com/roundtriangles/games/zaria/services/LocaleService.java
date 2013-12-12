@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -64,7 +65,11 @@ public class LocaleService {
             PropertyResourceBundleWithParent resourceBundle =
                     assetManager.get(propertyFile, PropertyResourceBundleWithParent.class);
             if (resourceBundle != null) {
-                return resourceBundle.getString(key.toString());
+                try {
+                    return resourceBundle.getString(key.toString());
+                } catch (MissingResourceException e) {
+                    return key.toString();
+                }
             }
         }
         return null;
