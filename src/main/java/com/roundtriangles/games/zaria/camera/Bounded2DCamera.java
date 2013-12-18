@@ -17,6 +17,9 @@ public class Bounded2DCamera extends OrthographicCamera {
 
     private float minX, maxX, minY, maxY;
 
+    public Vector2 previousTouch = new Vector2();
+    public boolean drag = false;
+
     public Bounded2DCamera() {
     }
 
@@ -28,9 +31,20 @@ public class Bounded2DCamera extends OrthographicCamera {
         this.zoomStep = zoomStep;
     }
 
-    public void shiftCamera(Vector2 shift) {
-        position.add(shift.x, shift.y, 0);
+    public void touchDown(Vector2 gameTouchPoint) {
+        previousTouch.set(gameTouchPoint);
+    }
+
+    public void touchUp(Vector2 gameTouchPoint) {
+        drag = false;
+    }
+
+    public void shiftCamera(Vector2 touchPoint) {
+        previousTouch.sub(touchPoint);
+        position.add(previousTouch.x, previousTouch.y, 0);
+        previousTouch.set(touchPoint);
         ensurePosition();
+        drag = true;
     }
 
     public void zoomIn() {
