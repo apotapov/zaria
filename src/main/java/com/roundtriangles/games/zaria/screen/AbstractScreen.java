@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria;
+package com.roundtriangles.games.zaria.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

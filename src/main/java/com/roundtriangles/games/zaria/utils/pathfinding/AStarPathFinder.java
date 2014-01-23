@@ -565,7 +565,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
     }
 
     /**
-     * @see org.newdawn.slick.util.pathfinding.PathFindingContext#getMover()
+     * @see PathFindingContext#getMover()
      */
     @Override
     public Mover getMover() {
@@ -573,7 +573,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
     }
 
     /**
-     * @see org.newdawn.slick.util.pathfinding.PathFindingContext#getSearchDistance()
+     * @see PathFindingContext#getSearchDistance()
      */
     @Override
     public int getSearchDistance() {
@@ -581,7 +581,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
     }
 
     /**
-     * @see org.newdawn.slick.util.pathfinding.PathFindingContext#getSourceX()
+     * @see PathFindingContext#getSourceX()
      */
     @Override
     public int getSourceX() {
@@ -589,7 +589,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
     }
 
     /**
-     * @see org.newdawn.slick.util.pathfinding.PathFindingContext#getSourceY()
+     * @see PathFindingContext#getSourceY()
      */
     @Override
     public int getSourceY() {

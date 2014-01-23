@@ -7,6 +7,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.roundtriangles.games.zaria.screen.AbstractScreen;
+import com.roundtriangles.games.zaria.screen.LoadingScreen;
+
 public class AbstractGameTest {
 
     private class TestGame extends AbstractGame<TestGame> {

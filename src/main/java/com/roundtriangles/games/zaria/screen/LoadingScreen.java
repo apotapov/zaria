@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria;
+package com.roundtriangles.games.zaria.screen;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.roundtriangles.games.zaria.AbstractGame;
 import com.roundtriangles.games.zaria.services.utils.GameAssetLoader;
 
 @SuppressWarnings("rawtypes")

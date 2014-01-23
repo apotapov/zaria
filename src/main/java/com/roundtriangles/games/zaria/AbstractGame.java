@@ -3,6 +3,10 @@ package com.roundtriangles.games.zaria;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.roundtriangles.games.zaria.screen.AbstractScreen;
+import com.roundtriangles.games.zaria.screen.LoadingScreen;
+import com.roundtriangles.games.zaria.services.AssetsService;
+import com.roundtriangles.games.zaria.services.ConstantsService;
 import com.roundtriangles.games.zaria.services.GraphicsService;
 import com.roundtriangles.games.zaria.services.LocaleService;
 import com.roundtriangles.games.zaria.services.PreferenceService;
@@ -18,6 +22,8 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
     protected SoundService soundService;
     protected GraphicsService graphicsService;
     protected LocaleService localeService;
+    protected ConstantsService constantsService;
+    protected AssetsService assetsService;
 
     public abstract LoadingScreen<T> getLoadingScreen();
     public abstract AbstractScreen<T> getMainMenuScreen();
@@ -30,6 +36,8 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
         graphicsService = new GraphicsService();
         preferenceService = new PreferenceService(getClass().getSimpleName(), soundService);
         localeService = new LocaleService();
+        constantsService = new ConstantsService();
+        assetsService = new AssetsService();
 
         initialize();
 
@@ -76,18 +84,5 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
         preferenceService.dispose();
         soundService.dispose();
         graphicsService.dispose();
-    }
-
-    public PreferenceService getPreferenceService() {
-        return preferenceService;
-    }
-    public SoundService getSoundService() {
-        return soundService;
-    }
-    public GraphicsService getGraphicsService() {
-        return graphicsService;
-    }
-    public LocaleService getLocaleService() {
-        return localeService;
     }
 }
