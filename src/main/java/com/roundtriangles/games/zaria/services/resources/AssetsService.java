@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria.services;
+package com.roundtriangles.games.zaria.services.resources;
 
 
 public class AssetsService extends ConstantsService {

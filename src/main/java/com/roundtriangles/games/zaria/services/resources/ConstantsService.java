@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria.services;
+package com.roundtriangles.games.zaria.services.resources;
 
 
 public class ConstantsService extends ResourceBundleService {
@@ -31,5 +31,9 @@ public class ConstantsService extends ResourceBundleService {
 
     @Override
     public void onFinishLoading() {
+    }
+
+    @Override
+    public void dispose() {
     }
 }

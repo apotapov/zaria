@@ -7,13 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Disposable;
 import com.roundtriangles.games.zaria.services.PreferenceService.PreferenceChangeListener;
 
 /**
  * A service that manages the sound effects.
  */
-public class SoundService implements Disposable, PreferenceChangeListener {
+public class SoundService implements IAssetBasedService, PreferenceChangeListener {
 
     private static class NamedMusic {
         Music music;
@@ -31,17 +30,13 @@ public class SoundService implements Disposable, PreferenceChangeListener {
 
     private NamedMusic currentMusic;
 
-    public SoundService(AssetManager assetManager) {
-        this.assetManager = assetManager;
+    public SoundService() {
         soundEffects = new ArrayList<String>();
         backgroundMusic = new ArrayList<String>();
         currentMusic = new NamedMusic();
     }
 
-    public SoundService() {
-        this(null);
-    }
-
+    @Override
     public void setAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
@@ -157,6 +152,7 @@ public class SoundService implements Disposable, PreferenceChangeListener {
         }
     }
 
+    @Override
     public void onFinishLoading() {
     }
 }

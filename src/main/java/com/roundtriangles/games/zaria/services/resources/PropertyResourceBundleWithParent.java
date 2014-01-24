@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria.services.i18n;
+package com.roundtriangles.games.zaria.services.resources;
 
 import java.io.IOException;
 import java.io.InputStream;

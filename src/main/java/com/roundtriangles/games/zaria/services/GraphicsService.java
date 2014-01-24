@@ -16,12 +16,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.roundtriangles.games.zaria.services.utils.FontDefinition;
 
-public class GraphicsService implements Disposable {
+public class GraphicsService implements IAssetBasedService {
     private static final String LOG_TAG = GraphicsService.class.getSimpleName();
 
     private AssetManager assetManager;
@@ -47,6 +46,7 @@ public class GraphicsService implements Disposable {
         this(null);
     }
 
+    @Override
     public void setAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
@@ -231,8 +231,7 @@ public class GraphicsService implements Disposable {
         }
     }
 
+    @Override
     public void onFinishLoading() {
     }
-
-
 }

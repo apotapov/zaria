@@ -4,14 +4,13 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.roundtriangles.games.zaria.AbstractLevel;
 import com.roundtriangles.games.zaria.services.utils.Levels;
 import com.roundtriangles.games.zaria.services.utils.Levels.LevelsAssetLoader;
 
 @SuppressWarnings("rawtypes")
-public abstract class LevelService<T extends AbstractLevel> implements Disposable, LoadedCallback {
+public abstract class LevelService<T extends AbstractLevel> implements IAssetBasedService, LoadedCallback {
 
     protected OrderedMap<String, T> levelMap;
     protected final String levelDefinitionFile;
@@ -74,11 +73,16 @@ public abstract class LevelService<T extends AbstractLevel> implements Disposabl
         levelMap.clear();
     }
 
+    @Override
     public void setAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
         if (assetManager != null) {
             this.assetManager.setLoader(levelClass, getLevelLoader());
             this.assetManager.setLoader(Levels.class, new LevelsAssetLoader());
         }
+    }
+
+    @Override
+    public void onFinishLoading() {
     }
 }

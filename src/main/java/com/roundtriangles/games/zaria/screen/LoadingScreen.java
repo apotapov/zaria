@@ -16,18 +16,35 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
     private static final float FADE_TIME = 0.75f;
     private static final float DISPLAY_TIME = 1.75f;
 
-    private Texture splashTexture;
+    Texture splashTexture;
+    GameAssetLoader assetLoader;
 
-    public LoadingScreen(final T game, final GameAssetLoader assetLoader,
-            String splashImageFile, int width, int height) {
+    public LoadingScreen(final T game,
+            GameAssetLoader assetLoader,
+            String splashImage) {
         super(game);
 
-        splashTexture = new Texture(splashImageFile);
+        splashTexture = new Texture(splashImage);
+        this.assetLoader = assetLoader;
+    }
 
+    @Override
+    public void resume() {
+        super.resume();
+        splashTexture.bind();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        splashTexture.dispose();
+    }
+
+    @Override
+    public void initialize() {
         // in the image atlas, our splash image begins at (0,0) of the
         // upper-left corner and has a dimension of 512x301
-        TextureRegion splashRegion =
-                new TextureRegion(splashTexture, 0, 0, width, height);
+        TextureRegion splashRegion = new TextureRegion(splashTexture);
 
         // here we create the splash image actor and set its size
         Image splashImage = new Image(splashRegion);
@@ -59,17 +76,5 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
 
         splashImage.addAction(actions);
         stage.addActor(splashImage);
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        splashTexture.bind();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        splashTexture.dispose();
     }
 }

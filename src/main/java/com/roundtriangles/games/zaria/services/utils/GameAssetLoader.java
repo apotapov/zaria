@@ -1,39 +1,25 @@
 package com.roundtriangles.games.zaria.services.utils;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.roundtriangles.games.zaria.AbstractLevel;
-import com.roundtriangles.games.zaria.services.GraphicsService;
-import com.roundtriangles.games.zaria.services.LevelService;
-import com.roundtriangles.games.zaria.services.LocaleService;
-import com.roundtriangles.games.zaria.services.SoundService;
+import com.roundtriangles.games.zaria.services.IAssetBasedService;
 
 @SuppressWarnings("rawtypes")
 public abstract class GameAssetLoader<T extends AbstractLevel> implements Disposable {
 
     protected AssetManager assetManager;
-    protected SoundService soundService;
-    protected LocaleService localeService;
-    protected GraphicsService graphicsService;
-    protected LevelService<T> levelService;
+    protected Array<IAssetBasedService> services;
 
-    public GameAssetLoader(SoundService soundService,
-            GraphicsService graphicsService,
-            LocaleService localeService,
-            LevelService<T> levelService) {
+    public GameAssetLoader(IAssetBasedService...services) {
         this.assetManager = new AssetManager();
+        this.services = new Array<IAssetBasedService>();
 
-        this.soundService = soundService;
-        soundService.setAssetManager(assetManager);
-
-        this.graphicsService = graphicsService;
-        graphicsService.setAssetManager(assetManager);
-
-        this.localeService = localeService;
-        localeService.setAssetManager(assetManager);
-
-        this.levelService = levelService;
-        levelService.setAssetManager(assetManager);
+        for (IAssetBasedService service : services) {
+            service.setAssetManager(assetManager);
+            this.services.add(service);
+        }
     }
 
     protected abstract void loadAssets();
@@ -45,13 +31,15 @@ public abstract class GameAssetLoader<T extends AbstractLevel> implements Dispos
     }
 
     protected void onFinishLoading() {
-        soundService.onFinishLoading();
-        graphicsService.onFinishLoading();
-        localeService.onFinishLoading();
+        for (IAssetBasedService service : services) {
+            service.onFinishLoading();
+        }
     }
 
     @Override
     public void dispose() {
-        assetManager.dispose();
+        for (IAssetBasedService service : services) {
+            service.dispose();
+        }
     }
 }

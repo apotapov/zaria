@@ -5,25 +5,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
 import com.roundtriangles.games.zaria.screen.LoadingScreen;
-import com.roundtriangles.games.zaria.services.AssetsService;
-import com.roundtriangles.games.zaria.services.ConstantsService;
 import com.roundtriangles.games.zaria.services.GraphicsService;
-import com.roundtriangles.games.zaria.services.LocaleService;
 import com.roundtriangles.games.zaria.services.PreferenceService;
 import com.roundtriangles.games.zaria.services.SoundService;
+import com.roundtriangles.games.zaria.services.resources.AssetsService;
+import com.roundtriangles.games.zaria.services.resources.ConstantsService;
+import com.roundtriangles.games.zaria.services.resources.LocaleService;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractGame<T extends AbstractGame> extends Game {
 
     protected final String LOG_TAG = getClass().getSimpleName();
 
-    protected FPSLogger fpsLogger;
-    protected PreferenceService preferenceService;
-    protected SoundService soundService;
-    protected GraphicsService graphicsService;
-    protected LocaleService localeService;
-    protected ConstantsService constantsService;
-    protected AssetsService assetsService;
+    public FPSLogger fpsLogger;
+    public PreferenceService preferenceService;
+    public SoundService soundService;
+    public GraphicsService graphicsService;
+    public LocaleService localeService;
+    public ConstantsService constantsService;
+    public AssetsService assetsService;
 
     public abstract LoadingScreen<T> getLoadingScreen();
     public abstract AbstractScreen<T> getMainMenuScreen();
@@ -75,14 +75,5 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
         super.resume();
         Gdx.app.log(LOG_TAG, "Resume");
         soundService.play();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        Gdx.app.log(LOG_TAG, "Dispose");
-        preferenceService.dispose();
-        soundService.dispose();
-        graphicsService.dispose();
     }
 }

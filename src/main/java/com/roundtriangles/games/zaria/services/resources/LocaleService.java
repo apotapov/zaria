@@ -1,10 +1,8 @@
-package com.roundtriangles.games.zaria.services;
+package com.roundtriangles.games.zaria.services.resources;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import com.roundtriangles.games.zaria.services.i18n.PropertyResourceBundleWithParent;
 
 public class LocaleService extends ResourceBundleService {
 
@@ -61,4 +59,7 @@ public class LocaleService extends ResourceBundleService {
         }
     }
 
+    @Override
+    public void dispose() {
+    }
 }

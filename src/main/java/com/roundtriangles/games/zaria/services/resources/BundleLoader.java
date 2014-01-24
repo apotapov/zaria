@@ -1,4 +1,4 @@
-package com.roundtriangles.games.zaria.services.i18n;
+package com.roundtriangles.games.zaria.services.resources;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;

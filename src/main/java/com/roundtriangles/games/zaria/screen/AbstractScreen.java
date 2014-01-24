@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class AbstractScreen<T> implements Screen {
+public abstract class AbstractScreen<T> implements Screen {
 
     protected final T game;
     protected final Stage stage;
@@ -16,6 +16,8 @@ public class AbstractScreen<T> implements Screen {
         stage = new Stage();
         paused = false;
     }
+
+    public abstract void initialize();
 
     @Override
     public void render(float delta) {
