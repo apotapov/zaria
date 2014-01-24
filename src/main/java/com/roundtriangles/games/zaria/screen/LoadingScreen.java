@@ -13,19 +13,22 @@ import com.roundtriangles.games.zaria.services.utils.GameAssetLoader;
 @SuppressWarnings("rawtypes")
 public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
 
-    private static final float FADE_TIME = 0.75f;
-    private static final float DISPLAY_TIME = 1.75f;
-
-    Texture splashTexture;
     GameAssetLoader assetLoader;
+    Texture splashTexture;
+    float displayTime;
+    float fadeTime;
 
     public LoadingScreen(final T game,
             GameAssetLoader assetLoader,
-            String splashImage) {
+            String splashImage,
+            float displayTime,
+            float fadeTime) {
         super(game);
 
-        splashTexture = new Texture(splashImage);
         this.assetLoader = assetLoader;
+        this.splashTexture = new Texture(splashImage);
+        this.displayTime = displayTime;
+        this.fadeTime = fadeTime;
     }
 
     @Override
@@ -52,27 +55,29 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
         splashImage.setHeight(stage.getHeight());
         splashImage.getColor().a = 0;
 
+        RunnableAction loadingAction = new RunnableAction();
+        loadingAction.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                assetLoader.load();
+            }
+        });
+
+        Action switchScreenAction = new Action() {
+            @Override
+            public boolean act(float delta) {
+                game.setScreen(game.getMainMenuScreen());
+                return true;
+            }
+        };
+
         // configure the fade-in/out effect on the splash image
         SequenceAction actions = Actions.sequence(
-                Actions.fadeIn(FADE_TIME),
-                Actions.delay(DISPLAY_TIME),
-                new Action() {
-                    @Override
-                    public boolean act(float delta) {
-                        if (assetLoader != null) {
-                            //TODO implement progress
-                            assetLoader.load();
-                        }
-                        return true;
-                    }
-                },
-                Actions.fadeOut(FADE_TIME),
-                new RunnableAction() {
-                    @Override
-                    public void run() {
-                        game.setScreen(game.getMainMenuScreen());
-                    }
-                });
+                Actions.fadeIn(fadeTime),
+                loadingAction,
+                Actions.delay(displayTime),
+                Actions.fadeOut(fadeTime),
+                switchScreenAction);
 
         splashImage.addAction(actions);
         stage.addActor(splashImage);

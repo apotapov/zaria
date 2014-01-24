@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class AbstractScreen<T> implements Screen {
 
-    protected final T game;
-    protected final Stage stage;
-    protected boolean paused;
+    public final T game;
+    public final Stage stage;
+    public boolean paused;
 
     public AbstractScreen(T game) {
         this.game = game;
