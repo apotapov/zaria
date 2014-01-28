@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
 import com.roundtriangles.games.zaria.screen.LoadingScreen;
 import com.roundtriangles.games.zaria.services.GraphicsService;
-import com.roundtriangles.games.zaria.services.PreferenceService;
 import com.roundtriangles.games.zaria.services.SoundService;
-import com.roundtriangles.games.zaria.services.resources.AssetsService;
-import com.roundtriangles.games.zaria.services.resources.ConstantsService;
 import com.roundtriangles.games.zaria.services.resources.LocaleService;
 
 @SuppressWarnings("rawtypes")
@@ -18,12 +15,9 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
     protected final String LOG_TAG = getClass().getSimpleName();
 
     public FPSLogger fpsLogger;
-    public PreferenceService preferenceService;
     public SoundService soundService;
     public GraphicsService graphicsService;
     public LocaleService localeService;
-    public ConstantsService constantsService;
-    public AssetsService assetsService;
 
     public abstract LoadingScreen<T> getLoadingScreen();
     public abstract AbstractScreen<T> getMainMenuScreen();
@@ -34,10 +28,7 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
         fpsLogger = new FPSLogger();
         soundService = new SoundService();
         graphicsService = new GraphicsService();
-        preferenceService = new PreferenceService(getClass().getSimpleName(), soundService);
         localeService = new LocaleService();
-        constantsService = new ConstantsService();
-        assetsService = new AssetsService();
 
         initialize();
 

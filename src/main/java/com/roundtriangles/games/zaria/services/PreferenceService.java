@@ -12,11 +12,16 @@ public class PreferenceService implements Disposable {
 
     public interface PreferenceChangeListener {
         public void onPreferenceChange(String name, boolean value);
+        public void onPreferenceChange(String name, int value);
+        public void onPreferenceChange(String name, String value);
     }
 
     // constants
     public static final String PREF_MUSIC_ENABLED = "music.enabled";
     public static final String PREF_SOUND_ENABLED = "sound.enabled";
+
+    private static final boolean DEFAULT_MUSIC_ENABLED = true;
+    private static final boolean DEFAULT_SOUND_ENABLED = true;
 
     private String preferencesName;
     private List<PreferenceChangeListener> listeners;
@@ -36,9 +41,8 @@ public class PreferenceService implements Disposable {
     }
 
     public void initialize() {
-        Preferences prefs = getPrefs();
-        setSoundEnabled(prefs.getBoolean(PREF_SOUND_ENABLED, true));
-        setMusicEnabled(prefs.getBoolean(PREF_MUSIC_ENABLED, true));
+        setSoundEnabled(getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED));
+        setMusicEnabled(getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED));
     }
 
     public void registerListener(PreferenceChangeListener listener) {
@@ -54,23 +58,19 @@ public class PreferenceService implements Disposable {
     }
 
     public boolean isSoundEnabled() {
-        return getPrefs().getBoolean(PREF_SOUND_ENABLED, true);
+        return getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED);
     }
 
     public void setSoundEnabled(boolean soundEffectsEnabled) {
-        getPrefs().putBoolean(PREF_SOUND_ENABLED, soundEffectsEnabled);
-        getPrefs().flush();
-        updateListeners(PREF_SOUND_ENABLED, soundEffectsEnabled);
+        setBoolean(PREF_SOUND_ENABLED, soundEffectsEnabled);
     }
 
     public boolean isMusicEnabled() {
-        return getPrefs().getBoolean(PREF_MUSIC_ENABLED, true);
+        return getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED);
     }
 
     public void setMusicEnabled(boolean musicEnabled) {
-        getPrefs().putBoolean(PREF_MUSIC_ENABLED, musicEnabled);
-        getPrefs().flush();
-        updateListeners(PREF_MUSIC_ENABLED, musicEnabled);
+        setBoolean(PREF_MUSIC_ENABLED, musicEnabled);
     }
 
     protected void updateListeners(String name, boolean value) {
@@ -78,6 +78,50 @@ public class PreferenceService implements Disposable {
         for (int i = 0; i < len; i++) {
             listeners.get(i).onPreferenceChange(name, value);
         }
+    }
+
+    protected void updateListeners(String name, int value) {
+        int len = listeners.size();
+        for (int i = 0; i < len; i++) {
+            listeners.get(i).onPreferenceChange(name, value);
+        }
+    }
+
+    protected void updateListeners(String name, String value) {
+        int len = listeners.size();
+        for (int i = 0; i < len; i++) {
+            listeners.get(i).onPreferenceChange(name, value);
+        }
+    }
+
+    protected void setBoolean(String key, boolean value) {
+        getPrefs().putBoolean(key, value);
+        getPrefs().flush();
+        updateListeners(key, value);
+    }
+
+    protected boolean getBoolean(String key, boolean defaultValue) {
+        return getPrefs().getBoolean(key, defaultValue);
+    }
+
+    protected void setInteger(String key, int value) {
+        getPrefs().putInteger(key, value);
+        getPrefs().flush();
+        updateListeners(key, value);
+    }
+
+    protected int getInteger(String key, int defaultValue) {
+        return getPrefs().getInteger(key, defaultValue);
+    }
+
+    protected void setString(String key, String value) {
+        getPrefs().putString(key, value);
+        getPrefs().flush();
+        updateListeners(key, value);
+    }
+
+    protected String getString(String key, String defaultValue) {
+        return getPrefs().getString(key, defaultValue);
     }
 
     @Override

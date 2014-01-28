@@ -153,6 +153,14 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     }
 
     @Override
+    public void onPreferenceChange(String name, int value) {
+    }
+
+    @Override
+    public void onPreferenceChange(String name, String value) {
+    }
+
+    @Override
     public void onFinishLoading() {
     }
 }
