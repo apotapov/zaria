@@ -25,11 +25,6 @@ public class ConstantsService extends ResourceBundleService {
     }
 
     @Override
-    public String get(Object key, Object...parameters) {
-        return get(file, key, parameters);
-    }
-
-    @Override
     public void onFinishLoading() {
     }
 

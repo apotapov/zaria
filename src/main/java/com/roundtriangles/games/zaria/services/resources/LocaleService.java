@@ -37,11 +37,6 @@ public class LocaleService extends ResourceBundleService {
     }
 
     @Override
-    public String get(Object key, Object...parameters) {
-        return get(localeMap.get(Locale.getDefault()), key, parameters);
-    }
-
-    @Override
     public void onFinishLoading() {
         String rootPropertyFile = localeMap.get(rootLocale);
         if (rootPropertyFile != null) {

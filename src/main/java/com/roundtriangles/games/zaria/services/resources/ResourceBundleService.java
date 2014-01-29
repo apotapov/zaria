@@ -1,6 +1,5 @@
 package com.roundtriangles.games.zaria.services.resources;
 
-import java.text.MessageFormat;
 import java.util.MissingResourceException;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -14,7 +13,6 @@ public abstract class ResourceBundleService implements IAssetBasedService {
     protected AssetManager assetManager;
 
     public abstract String get(Object key);
-    public abstract String get(Object key, Object...parameters);
     @Override
     public abstract void onFinishLoading();
 
@@ -42,14 +40,6 @@ public abstract class ResourceBundleService implements IAssetBasedService {
                     return key.toString();
                 }
             }
-        }
-        return null;
-    }
-
-    protected String get(String propertyFile, Object key, Object...parameters) {
-        String localizedString = get(propertyFile, key);
-        if (localizedString != null) {
-            return MessageFormat.format(localizedString, parameters);
         }
         return null;
     }
