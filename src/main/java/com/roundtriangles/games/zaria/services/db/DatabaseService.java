@@ -11,10 +11,12 @@ public abstract class DatabaseService implements IAssetBasedService {
     protected DatabaseServiceConfig config;
 
     protected abstract void createTables();
+    protected abstract void loadData();
 
     public void load() {
         createTables();
         upgradeService.loadUpgradeData();
+        loadData();
     }
 
     @Override
