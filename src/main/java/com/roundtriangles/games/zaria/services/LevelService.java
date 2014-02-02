@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetLoaderParameters.LoadedCallback;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
-import com.badlogic.gdx.utils.OrderedMap;
+import com.badlogic.gdx.utils.Array;
 import com.roundtriangles.games.zaria.AbstractLevel;
 import com.roundtriangles.games.zaria.services.utils.Levels;
 import com.roundtriangles.games.zaria.services.utils.Levels.LevelsAssetLoader;
@@ -12,7 +12,7 @@ import com.roundtriangles.games.zaria.services.utils.Levels.LevelsAssetLoader;
 @SuppressWarnings("rawtypes")
 public abstract class LevelService<T extends AbstractLevel> implements IAssetBasedService, LoadedCallback {
 
-    protected OrderedMap<String, T> levelMap;
+    protected Array<T> levelList;
     protected final String levelDefinitionFile;
     protected final Class<T> levelClass;
     protected Levels levels;
@@ -44,9 +44,9 @@ public abstract class LevelService<T extends AbstractLevel> implements IAssetBas
     }
 
     @SuppressWarnings("unchecked")
-    public OrderedMap<String, T> getLevels() {
-        if (levelMap == null) {
-            levelMap = new OrderedMap<String, T>();
+    public Array<T> getLevels() {
+        if (levelList == null) {
+            levelList = new Array<T>();
             T previousLevel = null;
             for (String levelFile : levels.levels) {
                 T level = assetManager.get(levelFile, levelClass);
@@ -55,22 +55,31 @@ public abstract class LevelService<T extends AbstractLevel> implements IAssetBas
                 } else {
                     previousLevel.nextLevel = level;
                 }
-                levelMap.put(level.name, level);
+                levelList.add(level);
             }
         }
-        return levelMap;
+        return levelList;
     }
 
     public T getLevel(String name) {
-        return getLevels().get(name);
+        for (T level : levelList) {
+            if (level.name.equals(name)) {
+                return level;
+            }
+        }
+        return null;
+    }
+
+    public T getLevel(int index) {
+        return levelList.get(index);
     }
 
     @Override
     public void dispose() {
-        for (T level : levelMap.values()) {
+        for (T level : levelList) {
             level.dispose();
         }
-        levelMap.clear();
+        levelList.clear();
     }
 
     @Override
