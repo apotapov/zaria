@@ -68,7 +68,7 @@ public class GraphicsService implements IAssetBasedService {
             Texture texture = assetManager.get(name, Texture.class);
             return texture;
         } else {
-            throw new GdxRuntimeException("Could not find specified skin: " + name);
+            throw new GdxRuntimeException("Could not find specified texture: " + name);
         }
     }
 
@@ -157,7 +157,7 @@ public class GraphicsService implements IAssetBasedService {
         return spriteArray;
     }
 
-    public Animation getAntimaion(String atlasName, String name, int playType, float duration) {
+    public Animation getAnimation(String atlasName, String name, int playType, float duration) {
         Animation animation = null;
         if (!animationMap.containsKey(name)) {
             Array<Sprite> sprites = getSprites(atlasName, name);
