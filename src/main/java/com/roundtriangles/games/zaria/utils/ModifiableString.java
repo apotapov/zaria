@@ -10,12 +10,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ModifiableString implements CharSequence {
 
-    final char[] buffer;
+
     final AtomicReference<CharBuffer> cbRef;
     final String string;
 
     public ModifiableString(String initializingString) {
-        buffer = new char[initializingString.length()];
         cbRef = new AtomicReference<CharBuffer>();
         Charset charset = new Charset("foo", null) {
             @Override
@@ -47,7 +46,9 @@ public class ModifiableString implements CharSequence {
     }
 
     public void setChar(int index, char character) {
-        buffer[index] = character;
+        CharBuffer charBuffer = cbRef.get();
+        charBuffer.position(index);
+        charBuffer.put(character);
     }
 
     @Override

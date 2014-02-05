@@ -1,6 +1,5 @@
 package com.roundtriangles.games.zaria.utils;
 
-import java.nio.CharBuffer;
 
 public class TimeModifiableString extends ModifiableString {
 
@@ -9,23 +8,11 @@ public class TimeModifiableString extends ModifiableString {
     private static final int TIME_LENGTH = 9;
     private static final String INITIALIZING_STRING = "000000000";
 
+    final char[] buffer;
+
     public TimeModifiableString() {
         super(INITIALIZING_STRING);
-    }
-
-    @Override
-    public char charAt(int arg0) {
-        return string.charAt(arg0);
-    }
-
-    @Override
-    public int length() {
-        return string.length();
-    }
-
-    @Override
-    public CharSequence subSequence(int arg0, int arg1) {
-        return string.subSequence(arg0, arg1);
+        buffer = new char[INITIALIZING_STRING.length()];
     }
 
     public void setTime(int gameTime) {
@@ -46,9 +33,7 @@ public class TimeModifiableString extends ModifiableString {
         paddedInt(minutes, secondsSize + 1);
 
         for (int i = TIME_LENGTH-1, j = 0; i >= 0; i--, j++) {
-            CharBuffer charBuffer = cbRef.get();
-            charBuffer.position(j);
-            charBuffer.put(buffer[i]);
+            setChar(j, buffer[i]);
         }
     }
 
@@ -70,10 +55,5 @@ public class TimeModifiableString extends ModifiableString {
             }
             return i - offset;
         }
-    }
-
-    @Override
-    public String toString() {
-        return string;
     }
 }
