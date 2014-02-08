@@ -3,10 +3,8 @@ package com.roundtriangles.games.zaria.services.db.upgrade;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.j256.ormlite.table.TableUtils;
 import com.roundtriangles.games.zaria.services.IAssetBasedService;
 import com.roundtriangles.games.zaria.services.db.DatabaseServiceConfig;
-import com.roundtriangles.games.zaria.services.db.ITable;
 
 public class DatabaseUpgradeService implements IAssetBasedService {
 
@@ -19,9 +17,9 @@ public class DatabaseUpgradeService implements IAssetBasedService {
 
     public void loadUpgradeData() {
         try {
-            for (Class<? extends ITable> table : config.tables) {
-                TableUtils.createTableIfNotExists(config.connectionSource, table);
-            }
+            //            for (Class<? extends ITable> table : config.tables) {
+            //                TableUtils.createTableIfNotExists(config.connectionSource, table);
+            //            }
         } catch (Exception e) {
             throw new GdxRuntimeException(e);
         }
