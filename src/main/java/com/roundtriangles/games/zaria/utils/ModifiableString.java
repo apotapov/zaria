@@ -13,8 +13,10 @@ public class ModifiableString implements CharSequence {
 
     final AtomicReference<CharBuffer> cbRef;
     final String string;
+    String initializingString;
 
     public ModifiableString(String initializingString) {
+        this.initializingString = initializingString;
         cbRef = new AtomicReference<CharBuffer>();
         Charset charset = new Charset("foo", null) {
             @Override
@@ -64,6 +66,12 @@ public class ModifiableString implements CharSequence {
     @Override
     public CharSequence subSequence(int start, int end) {
         return string.subSequence(start, end);
+    }
+
+    public void reset() {
+        for (int i = 0; i < initializingString.length(); i++) {
+            setChar(i, initializingString.charAt(i));
+        }
     }
 
     @Override
