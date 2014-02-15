@@ -1,6 +1,8 @@
 package com.roundtriangles.games.zaria.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -31,6 +33,21 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
         this.fadeTime = fadeTime;
     }
 
+    public LoadingScreen(final T game,
+            GameAssetLoader assetLoader,
+            String splashAtlas,
+            String splashName,
+            float displayTime,
+            float fadeTime) {
+        super(game);
+
+        this.assetLoader = assetLoader;
+        TextureAtlas atlas = new TextureAtlas(splashAtlas);
+        this.splashTexture = atlas.findRegion(splashName).getTexture();
+        this.displayTime = displayTime;
+        this.fadeTime = fadeTime;
+    }
+
     @Override
     public void resume() {
         super.resume();
@@ -51,8 +68,8 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
 
         // here we create the splash image actor and set its size
         Image splashImage = new Image(splashRegion);
-        splashImage.setWidth(stage.getWidth());
-        splashImage.setHeight(stage.getHeight());
+        splashImage.setWidth(Gdx.graphics.getWidth());
+        splashImage.setHeight(Gdx.graphics.getHeight());
         splashImage.getColor().a = 0;
 
         RunnableAction loadingAction = new RunnableAction();

@@ -72,6 +72,15 @@ public class GraphicsService implements IAssetBasedService {
         }
     }
 
+    public Texture getTexture(String atlas, String name) {
+        if (assetManager.isLoaded(atlas)) {
+            TextureAtlas textureAtlas = assetManager.get(atlas, TextureAtlas.class);
+            return textureAtlas.findRegion(name).getTexture();
+        } else {
+            throw new GdxRuntimeException("Could not find specified texture: " + name);
+        }
+    }
+
     public Skin getSkin(String name) {
         if (assetManager.isLoaded(name)) {
             return assetManager.get(name, Skin.class);
