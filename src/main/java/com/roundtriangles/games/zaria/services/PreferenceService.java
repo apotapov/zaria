@@ -19,9 +19,11 @@ public class PreferenceService implements Disposable {
     // constants
     public static final String PREF_MUSIC_ENABLED = "music.enabled";
     public static final String PREF_SOUND_ENABLED = "sound.enabled";
+    public static final String PREF_VIBRATE_ENABLED = "vibrate.enabled";
 
     private static final boolean DEFAULT_MUSIC_ENABLED = true;
     private static final boolean DEFAULT_SOUND_ENABLED = true;
+    private static final boolean DEFAULT_VIBRATE_ENABLED = true;
 
     private String preferencesName;
     private List<PreferenceChangeListener> listeners;
@@ -43,6 +45,7 @@ public class PreferenceService implements Disposable {
     public void initialize() {
         setSoundEnabled(getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED));
         setMusicEnabled(getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED));
+        setMusicEnabled(getBoolean(PREF_VIBRATE_ENABLED, DEFAULT_VIBRATE_ENABLED));
     }
 
     public void registerListener(PreferenceChangeListener listener) {
@@ -61,16 +64,24 @@ public class PreferenceService implements Disposable {
         return getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED);
     }
 
-    public void setSoundEnabled(boolean soundEffectsEnabled) {
-        setBoolean(PREF_SOUND_ENABLED, soundEffectsEnabled);
+    public void setSoundEnabled(boolean enabled) {
+        setBoolean(PREF_SOUND_ENABLED, enabled);
     }
 
     public boolean isMusicEnabled() {
         return getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED);
     }
 
-    public void setMusicEnabled(boolean musicEnabled) {
-        setBoolean(PREF_MUSIC_ENABLED, musicEnabled);
+    public void setMusicEnabled(boolean enabled) {
+        setBoolean(PREF_MUSIC_ENABLED, enabled);
+    }
+
+    public boolean isVibrateEnabled() {
+        return getBoolean(PREF_VIBRATE_ENABLED, DEFAULT_VIBRATE_ENABLED);
+    }
+
+    public void setVibrateEnabled(boolean enabled) {
+        setBoolean(PREF_VIBRATE_ENABLED, enabled);
     }
 
     protected void updateListeners(String name, boolean value) {

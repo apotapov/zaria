@@ -14,21 +14,22 @@ import com.roundtriangles.games.zaria.services.PreferenceService.PreferenceChang
  */
 public class SoundService implements IAssetBasedService, PreferenceChangeListener {
 
-    private static class NamedMusic {
+    static class NamedMusic {
         Music music;
         String name;
     }
 
     private static final String LOG_TAG = SoundService.class.getSimpleName();
 
-    private boolean soundEnabled = true;
-    private boolean musicEnabled = true;
+    boolean soundEnabled = true;
+    boolean musicEnabled = true;
+    boolean vibrateEnabled = true;
 
-    private AssetManager assetManager;
-    private List<String> soundEffects;
-    private List<String> backgroundMusic;
+    AssetManager assetManager;
+    List<String> soundEffects;
+    List<String> backgroundMusic;
 
-    private NamedMusic currentMusic;
+    NamedMusic currentMusic;
 
     public SoundService() {
         soundEffects = new ArrayList<String>();
@@ -56,6 +57,12 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
             String music = soundList[i];
             assetManager.load(music, Music.class);
             backgroundMusic.add(music);
+        }
+    }
+
+    public void vibrate(int milliseconds) {
+        if (vibrateEnabled) {
+            Gdx.input.vibrate(milliseconds);
         }
     }
 
@@ -149,6 +156,9 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
                     currentMusic.music.stop();
                 }
             }
+        }
+        if (name.equals(PreferenceService.PREF_VIBRATE_ENABLED)) {
+            vibrateEnabled = value;
         }
     }
 
