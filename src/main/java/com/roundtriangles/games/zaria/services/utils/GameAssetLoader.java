@@ -3,11 +3,9 @@ package com.roundtriangles.games.zaria.services.utils;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.roundtriangles.games.zaria.AbstractLevel;
 import com.roundtriangles.games.zaria.services.IAssetBasedService;
 
-@SuppressWarnings("rawtypes")
-public abstract class GameAssetLoader<T extends AbstractLevel> implements Disposable {
+public abstract class GameAssetLoader implements Disposable {
 
     protected AssetManager assetManager;
     protected Array<IAssetBasedService> services;

@@ -1,9 +1,7 @@
 package com.roundtriangles.games.zaria.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
@@ -12,26 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.roundtriangles.games.zaria.AbstractGame;
 import com.roundtriangles.games.zaria.services.utils.GameAssetLoader;
 
-@SuppressWarnings("rawtypes")
-public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
+public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> {
 
     GameAssetLoader assetLoader;
-    Texture splashTexture;
+    Sprite splashTexture;
     float displayTime;
     float fadeTime;
-
-    public LoadingScreen(final T game,
-            GameAssetLoader assetLoader,
-            String splashImage,
-            float displayTime,
-            float fadeTime) {
-        super(game);
-
-        this.assetLoader = assetLoader;
-        this.splashTexture = new Texture(splashImage);
-        this.displayTime = displayTime;
-        this.fadeTime = fadeTime;
-    }
 
     public LoadingScreen(final T game,
             GameAssetLoader assetLoader,
@@ -43,7 +27,7 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
 
         this.assetLoader = assetLoader;
         TextureAtlas atlas = new TextureAtlas(splashAtlas);
-        this.splashTexture = atlas.findRegion(splashName).getTexture();
+        this.splashTexture = atlas.createSprite(splashName);
         this.displayTime = displayTime;
         this.fadeTime = fadeTime;
     }
@@ -51,25 +35,19 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
     @Override
     public void resume() {
         super.resume();
-        splashTexture.bind();
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        splashTexture.dispose();
     }
 
     @Override
     public void initialize() {
-        // in the image atlas, our splash image begins at (0,0) of the
-        // upper-left corner and has a dimension of 512x301
-        TextureRegion splashRegion = new TextureRegion(splashTexture);
 
         // here we create the splash image actor and set its size
-        Image splashImage = new Image(splashRegion);
-        splashImage.setWidth(Gdx.graphics.getWidth());
-        splashImage.setHeight(Gdx.graphics.getHeight());
+        Image splashImage = new Image(splashTexture);
+        splashImage.setFillParent(true);
         splashImage.getColor().a = 0;
 
         RunnableAction loadingAction = new RunnableAction();
@@ -98,5 +76,10 @@ public class LoadingScreen<T extends AbstractGame> extends AbstractScreen<T> {
 
         splashImage.addAction(actions);
         stage.addActor(splashImage);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.stage.setViewport(width, height, true);
     }
 }

@@ -9,8 +9,7 @@ import com.roundtriangles.games.zaria.services.GraphicsService;
 import com.roundtriangles.games.zaria.services.SoundService;
 import com.roundtriangles.games.zaria.services.resources.LocaleService;
 
-@SuppressWarnings("rawtypes")
-public abstract class AbstractGame<T extends AbstractGame> extends Game {
+public abstract class AbstractGame<T extends AbstractGame<?>> extends Game {
 
     protected final String LOG_TAG = getClass().getSimpleName();
 
@@ -58,13 +57,11 @@ public abstract class AbstractGame<T extends AbstractGame> extends Game {
     public void pause() {
         super.pause();
         Gdx.app.log(LOG_TAG, "Pause");
-        soundService.pauseAll();
     }
 
     @Override
     public void resume() {
         super.resume();
         Gdx.app.log(LOG_TAG, "Resume");
-        soundService.play();
     }
 }
