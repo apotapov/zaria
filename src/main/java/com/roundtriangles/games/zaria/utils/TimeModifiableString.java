@@ -6,13 +6,12 @@ public class TimeModifiableString extends ModifiableString {
     private static final char[] NUMBERS = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     private static final char SEPARATOR = ':';
     private static final int TIME_LENGTH = 9;
-    private static final String INITIALIZING_STRING = "000000000";
 
     final char[] buffer;
 
     public TimeModifiableString() {
-        super(INITIALIZING_STRING);
-        buffer = new char[INITIALIZING_STRING.length()];
+        super(TIME_LENGTH);
+        buffer = new char[TIME_LENGTH];
     }
 
     public void setTime(int gameTime) {
