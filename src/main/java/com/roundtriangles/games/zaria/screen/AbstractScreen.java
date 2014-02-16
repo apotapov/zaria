@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.roundtriangles.games.zaria.AbstractGame;
 
 public abstract class AbstractScreen<T extends AbstractGame<?>> implements Screen {
@@ -29,6 +30,8 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
 
             stage.act(delta);
             stage.draw();
+
+            Table.drawDebug(stage);
         }
     }
 
