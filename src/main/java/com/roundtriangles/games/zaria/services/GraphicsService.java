@@ -22,14 +22,16 @@ import com.roundtriangles.games.zaria.services.utils.FontDefinition;
 
 public class GraphicsService implements IAssetBasedService {
 
-    private AssetManager assetManager;
-    private Array<String> graphicalElements;
+    protected AssetManager assetManager;
+    protected Array<String> graphicalElements;
 
-    private Map<String, Sprite> spriteMap;
-    private Map<String, Map<Integer, Sprite>> indexedSpriteMap;
-    private Map<String, Array<Sprite>> spriteArrayMap;
-    private Map<String, Animation> animationMap;
-    private ObjectMap<FontDefinition, BitmapFont> fontMap;
+    protected Map<String, Sprite> spriteMap;
+    protected Map<String, Map<Integer, Sprite>> indexedSpriteMap;
+    protected Map<String, Array<Sprite>> spriteArrayMap;
+    protected Map<String, Animation> animationMap;
+
+    protected ObjectMap<FontDefinition, BitmapFont> fontMap;
+    protected ObjectMap<String, FreeTypeFontGenerator> fontGenerators;
 
     public GraphicsService(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -38,7 +40,9 @@ public class GraphicsService implements IAssetBasedService {
         this.indexedSpriteMap = new HashMap<String, Map<Integer,Sprite>>();
         this.spriteArrayMap = new HashMap<String, Array<Sprite>>();
         this.animationMap = new HashMap<String, Animation>();
+
         this.fontMap = new ObjectMap<FontDefinition, BitmapFont>();
+        this.fontGenerators = new ObjectMap<String, FreeTypeFontGenerator>();
     }
 
     public GraphicsService() {
@@ -52,6 +56,10 @@ public class GraphicsService implements IAssetBasedService {
 
     @Override
     public void dispose() {
+        for (FreeTypeFontGenerator generator : fontGenerators.values()) {
+            generator.dispose();
+        }
+
         for (int i = 0; i < graphicalElements.size; i++) {
             String element = graphicalElements.get(i);
             if (assetManager.isLoaded(element)) {
@@ -217,24 +225,18 @@ public class GraphicsService implements IAssetBasedService {
 
     public void loadFonts(FontDefinition...fonts) {
 
-        ObjectMap<String, FreeTypeFontGenerator> generators =
-                new ObjectMap<String, FreeTypeFontGenerator>();
-
         for (FontDefinition fd : fonts) {
-            FreeTypeFontGenerator generator;
-            if (generators.containsKey(fd.path)) {
-                generator = generators.get(fd.path);
-            } else {
-                FileHandle fontFile = Gdx.files.internal(fd.path);
-                generator = new FreeTypeFontGenerator(fontFile);
-                generators.put(fd.path, generator);
+            if (!fontMap.containsKey(fd)) {
+                FreeTypeFontGenerator generator;
+                if (fontGenerators.containsKey(fd.path)) {
+                    generator = fontGenerators.get(fd.path);
+                } else {
+                    FileHandle fontFile = Gdx.files.internal(fd.path);
+                    generator = new FreeTypeFontGenerator(fontFile);
+                    fontGenerators.put(fd.path, generator);
+                }
+                fontMap.put(fd, generator.generateFont(fd.size));
             }
-            fontMap.put(fd, generator.generateFont(fd.size));
-        }
-
-        // clean up
-        for (FreeTypeFontGenerator generator : generators.values()) {
-            generator.dispose();
         }
     }
 

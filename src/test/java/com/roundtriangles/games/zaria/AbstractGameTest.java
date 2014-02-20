@@ -7,8 +7,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
 import com.roundtriangles.games.zaria.screen.LoadingScreen;
+import com.roundtriangles.games.zaria.services.SoundService;
 
 public class AbstractGameTest {
 
@@ -26,6 +28,16 @@ public class AbstractGameTest {
 
         @Override
         public void initialize() {
+        }
+
+        @Override
+        public FPSLogger createFPSLogger() {
+            return null;
+        }
+
+        @Override
+        public SoundService createSoundService() {
+            return null;
         }
 
     }
