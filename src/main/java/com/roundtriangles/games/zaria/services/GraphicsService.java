@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.roundtriangles.games.zaria.services.utils.FontDefinition;
 
 public class GraphicsService implements IAssetBasedService {
-    private static final String LOG_TAG = GraphicsService.class.getSimpleName();
 
     private AssetManager assetManager;
     private Array<String> graphicalElements;
@@ -53,7 +52,6 @@ public class GraphicsService implements IAssetBasedService {
 
     @Override
     public void dispose() {
-        Gdx.app.log(LOG_TAG, "Disposing graphics manager");
         for (int i = 0; i < graphicalElements.size; i++) {
             String element = graphicalElements.get(i);
             if (assetManager.isLoaded(element)) {

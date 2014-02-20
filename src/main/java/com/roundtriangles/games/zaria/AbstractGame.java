@@ -1,7 +1,6 @@
 package com.roundtriangles.games.zaria;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
 import com.roundtriangles.games.zaria.screen.LoadingScreen;
@@ -50,18 +49,15 @@ public abstract class AbstractGame<T extends AbstractGame<?>> extends Game {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        Gdx.app.log(LOG_TAG, "Resizing to: " + width + "x" + height);
     }
 
     @Override
     public void pause() {
         super.pause();
-        Gdx.app.log(LOG_TAG, "Pause");
     }
 
     @Override
     public void resume() {
         super.resume();
-        Gdx.app.log(LOG_TAG, "Resume");
     }
 }

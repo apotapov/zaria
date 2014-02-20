@@ -19,8 +19,6 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
         String name;
     }
 
-    private static final String LOG_TAG = SoundService.class.getSimpleName();
-
     boolean soundEnabled = true;
     boolean musicEnabled = true;
     boolean vibrateEnabled = true;
@@ -72,10 +70,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     public void playSound(String name) {
         if (soundEnabled) {
             if (assetManager.isLoaded(name)) {
-                Sound soundToPlay = assetManager.get(name, Sound.class);
-                soundToPlay.play();
-            } else {
-                Gdx.app.log(LOG_TAG, "Could not find specified sound: " + name);
+                assetManager.get(name, Sound.class).play();
             }
         }
     }
@@ -93,8 +88,6 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
                 }
                 currentMusic.music = music;
                 currentMusic.name = name;
-            } else {
-                Gdx.app.log(LOG_TAG, "Could not find specified music: " + name);
             }
         }
     }
@@ -123,7 +116,6 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
      */
     @Override
     public void dispose() {
-        Gdx.app.log(LOG_TAG, "Disposing sound manager");
         int len = soundEffects.size();
         for (int i = 0; i < len; i++) {
             String sound = soundEffects.get(i);
