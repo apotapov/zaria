@@ -21,20 +21,20 @@ public class PreferenceService implements Disposable {
     public static final String PREF_SOUND_ENABLED = "sound.enabled";
     public static final String PREF_VIBRATE_ENABLED = "vibrate.enabled";
 
-    private static final boolean DEFAULT_MUSIC_ENABLED = true;
-    private static final boolean DEFAULT_SOUND_ENABLED = true;
-    private static final boolean DEFAULT_VIBRATE_ENABLED = true;
+    protected static final boolean DEFAULT_MUSIC_ENABLED = true;
+    protected static final boolean DEFAULT_SOUND_ENABLED = true;
+    protected static final boolean DEFAULT_VIBRATE_ENABLED = true;
 
-    private String preferencesName;
-    private List<PreferenceChangeListener> listeners;
+    Preferences preferences;
+    List<PreferenceChangeListener> listeners;
 
     public PreferenceService(String preferencesName) {
-        this.preferencesName = preferencesName;
-        listeners = new ArrayList<PreferenceChangeListener>();
+        this.preferences = Gdx.app.getPreferences(preferencesName);
+        this.listeners = new ArrayList<PreferenceChangeListener>();
     }
 
     public PreferenceService(String preferencesName, PreferenceChangeListener...listeners) {
-        this.preferencesName = preferencesName;
+        this.preferences = Gdx.app.getPreferences(preferencesName);
         this.listeners = new ArrayList<PreferenceChangeListener>();
         for (PreferenceChangeListener listener : listeners) {
             registerListener(listener);
@@ -54,10 +54,6 @@ public class PreferenceService implements Disposable {
 
     public void unregisterListener(PreferenceChangeListener listener) {
         listeners.remove(listener);
-    }
-
-    protected Preferences getPrefs() {
-        return Gdx.app.getPreferences(preferencesName);
     }
 
     public boolean isSoundEnabled() {
@@ -106,37 +102,37 @@ public class PreferenceService implements Disposable {
     }
 
     protected void setBoolean(String key, boolean value) {
-        getPrefs().putBoolean(key, value);
-        getPrefs().flush();
+        preferences.putBoolean(key, value);
+        preferences.flush();
         updateListeners(key, value);
     }
 
     protected boolean getBoolean(String key, boolean defaultValue) {
-        return getPrefs().getBoolean(key, defaultValue);
+        return preferences.getBoolean(key, defaultValue);
     }
 
     protected void setInteger(String key, int value) {
-        getPrefs().putInteger(key, value);
-        getPrefs().flush();
+        preferences.putInteger(key, value);
+        preferences.flush();
         updateListeners(key, value);
     }
 
     protected int getInteger(String key, int defaultValue) {
-        return getPrefs().getInteger(key, defaultValue);
+        return preferences.getInteger(key, defaultValue);
     }
 
     protected void setString(String key, String value) {
-        getPrefs().putString(key, value);
-        getPrefs().flush();
+        preferences.putString(key, value);
+        preferences.flush();
         updateListeners(key, value);
     }
 
     protected String getString(String key, String defaultValue) {
-        return getPrefs().getString(key, defaultValue);
+        return preferences.getString(key, defaultValue);
     }
 
     @Override
     public void dispose() {
-        getPrefs().flush();
+        preferences.flush();
     }
 }
