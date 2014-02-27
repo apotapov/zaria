@@ -14,6 +14,7 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
     public final T game;
     public AbstractScreen<T> parentScreen;
 
+    protected boolean center;
     protected Image backgroundImage;
     protected float fadeTime;
 
@@ -21,37 +22,46 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
     public boolean paused;
 
     public AbstractScreen(T game, float fade) {
-        this(game, null, null, fade);
+        this(game, null, null, false, fade);
     }
 
     public AbstractScreen(T game, AbstractScreen<T> parentScreen, float fade) {
-        this(game, parentScreen, null, fade);
+        this(game, parentScreen, null, false, fade);
     }
 
     public AbstractScreen(T game, Image backgroundImage, float fade) {
-        this(game, null, backgroundImage, fade);
+        this(game, null, backgroundImage, false, fade);
     }
 
-    public AbstractScreen(T game, AbstractScreen<T> parentScreen, Image backgroundImage, float fade) {
+    public AbstractScreen(T game, Image backgroundImage, boolean center, float fade) {
+        this(game, null, backgroundImage, center, fade);
+    }
+
+    public AbstractScreen(T game, AbstractScreen<T> parentScreen, Image backgroundImage, boolean center,  float fade) {
         this.game = game;
         this.parentScreen = parentScreen;
         stage = new Stage();
         paused = false;
 
-        setBackgroundImage(backgroundImage);
+        setBackgroundImage(backgroundImage, center);
         this.fadeTime = fade;
     }
 
     public abstract void initialize();
 
-    public void setBackgroundImage(Image backgroundImage) {
+    public void setBackgroundImage(Image backgroundImage, boolean center) {
         if (this.backgroundImage != null) {
             backgroundImage.remove();
         }
         this.backgroundImage = backgroundImage;
+        this.center = center;
         if (backgroundImage != null) {
             stage.addActor(backgroundImage);
         }
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        setBackgroundImage(backgroundImage, false);
     }
 
     public void switchScreen(Screen screen) {
@@ -93,10 +103,15 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
 
             float imageWidth = width;
             float imageHeight = height * ratioDifference;
+            float x = 0;
+            float y = height - imageHeight;
+            if (center) {
+                y /= 2;
+            }
 
             backgroundImage.setWidth(imageWidth);
             backgroundImage.setHeight(imageHeight);
-            backgroundImage.setPosition(0, (height - imageHeight) / 2);
+            backgroundImage.setPosition(x, y);
         }
     }
 
