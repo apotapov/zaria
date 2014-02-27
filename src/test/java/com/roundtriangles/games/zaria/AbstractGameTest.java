@@ -9,22 +9,11 @@ import org.junit.Test;
 
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
-import com.roundtriangles.games.zaria.screen.LoadingScreen;
 import com.roundtriangles.games.zaria.services.SoundService;
 
 public class AbstractGameTest {
 
     private class TestGame extends AbstractGame<TestGame> {
-
-        @Override
-        public LoadingScreen<TestGame> getLoadingScreen() {
-            return null;
-        }
-
-        @Override
-        public AbstractScreen<TestGame> getMainMenuScreen() {
-            return null;
-        }
 
         @Override
         public void initialize() {
@@ -37,6 +26,11 @@ public class AbstractGameTest {
 
         @Override
         public SoundService createSoundService() {
+            return null;
+        }
+
+        @Override
+        public AbstractScreen<TestGame> getFirstScreen() {
             return null;
         }
 
@@ -61,7 +55,7 @@ public class AbstractGameTest {
     @Test
     public void testGame() {
         AbstractGame<TestGame> testGame = new TestGame();
-        Assert.assertNull(testGame.getMainMenuScreen());
+        Assert.assertNull(testGame.getFirstScreen());
     }
 
 }

@@ -116,7 +116,7 @@ public class GraphicsService implements IAssetBasedService {
             TextureAtlas atlas = assetManager.get(name, TextureAtlas.class);
             return atlas;
         } else {
-            throw new GdxRuntimeException("Could not find specified skin: " + name);
+            throw new GdxRuntimeException("Could not find specified atlas: " + name);
         }
     }
 

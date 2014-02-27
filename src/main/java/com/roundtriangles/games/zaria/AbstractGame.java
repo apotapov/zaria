@@ -3,18 +3,14 @@ package com.roundtriangles.games.zaria;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.roundtriangles.games.zaria.screen.AbstractScreen;
-import com.roundtriangles.games.zaria.screen.LoadingScreen;
 import com.roundtriangles.games.zaria.services.SoundService;
 
 public abstract class AbstractGame<T extends AbstractGame<?>> extends Game {
 
-    protected final String LOG_TAG = getClass().getSimpleName();
-
     public FPSLogger fpsLogger;
     public SoundService soundService;
 
-    public abstract LoadingScreen<T> getLoadingScreen();
-    public abstract AbstractScreen<T> getMainMenuScreen();
+    public abstract AbstractScreen<T> getFirstScreen();
     public abstract FPSLogger createFPSLogger();
     public abstract SoundService createSoundService();
 
@@ -28,12 +24,7 @@ public abstract class AbstractGame<T extends AbstractGame<?>> extends Game {
 
         initialize();
 
-        AbstractScreen<T> loadingScreen = getLoadingScreen();
-        if (loadingScreen != null) {
-            setScreen(loadingScreen);
-        } else {
-            setScreen(getMainMenuScreen());
-        }
+        setScreen(getFirstScreen());
     }
 
     @Override
@@ -42,20 +33,5 @@ public abstract class AbstractGame<T extends AbstractGame<?>> extends Game {
         if (fpsLogger != null) {
             fpsLogger.log();
         }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        super.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
     }
 }
