@@ -13,6 +13,7 @@ public class PreferenceService implements Disposable {
     public interface PreferenceChangeListener {
         public void onPreferenceChange(String name, boolean value);
         public void onPreferenceChange(String name, int value);
+        public void onPreferenceChange(String name, float value);
         public void onPreferenceChange(String name, String value);
     }
 
@@ -20,22 +21,22 @@ public class PreferenceService implements Disposable {
     public static final String PREF_MUSIC_ENABLED = "music.enabled";
     public static final String PREF_SOUND_ENABLED = "sound.enabled";
     public static final String PREF_VIBRATE_ENABLED = "vibrate.enabled";
+    public static final String PREF_VOLUME = "sound.volume";
 
     protected static final boolean DEFAULT_MUSIC_ENABLED = true;
     protected static final boolean DEFAULT_SOUND_ENABLED = true;
     protected static final boolean DEFAULT_VIBRATE_ENABLED = true;
 
+
     Preferences preferences;
     List<PreferenceChangeListener> listeners;
 
-    public PreferenceService(String preferencesName) {
-        this.preferences = Gdx.app.getPreferences(preferencesName);
-        this.listeners = new ArrayList<PreferenceChangeListener>();
-    }
+    private float defaultVolume;
 
-    public PreferenceService(String preferencesName, PreferenceChangeListener...listeners) {
+    public PreferenceService(String preferencesName, float defaultVolume, PreferenceChangeListener...listeners) {
         this.preferences = Gdx.app.getPreferences(preferencesName);
         this.listeners = new ArrayList<PreferenceChangeListener>();
+        this.defaultVolume = defaultVolume;
         for (PreferenceChangeListener listener : listeners) {
             registerListener(listener);
         }
@@ -46,6 +47,7 @@ public class PreferenceService implements Disposable {
         setSoundEnabled(getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED));
         setMusicEnabled(getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED));
         setMusicEnabled(getBoolean(PREF_VIBRATE_ENABLED, DEFAULT_VIBRATE_ENABLED));
+        setVolume(getFloat(PREF_VOLUME, defaultVolume));
     }
 
     public void registerListener(PreferenceChangeListener listener) {
@@ -80,6 +82,14 @@ public class PreferenceService implements Disposable {
         setBoolean(PREF_VIBRATE_ENABLED, enabled);
     }
 
+    public float getVolume() {
+        return getFloat(PREF_VOLUME, defaultVolume);
+    }
+
+    public void setVolume(float volume) {
+        setFloat(PREF_VOLUME, volume);
+    }
+
     protected void updateListeners(String name, boolean value) {
         int len = listeners.size();
         for (int i = 0; i < len; i++) {
@@ -88,16 +98,20 @@ public class PreferenceService implements Disposable {
     }
 
     protected void updateListeners(String name, int value) {
-        int len = listeners.size();
-        for (int i = 0; i < len; i++) {
-            listeners.get(i).onPreferenceChange(name, value);
+        for (PreferenceChangeListener listener : listeners) {
+            listener.onPreferenceChange(name, value);
+        }
+    }
+
+    protected void updateListeners(String name, float value) {
+        for (PreferenceChangeListener listener : listeners) {
+            listener.onPreferenceChange(name, value);
         }
     }
 
     protected void updateListeners(String name, String value) {
-        int len = listeners.size();
-        for (int i = 0; i < len; i++) {
-            listeners.get(i).onPreferenceChange(name, value);
+        for (PreferenceChangeListener listener : listeners) {
+            listener.onPreferenceChange(name, value);
         }
     }
 
@@ -119,6 +133,16 @@ public class PreferenceService implements Disposable {
 
     protected int getInteger(String key, int defaultValue) {
         return preferences.getInteger(key, defaultValue);
+    }
+
+    protected void setFloat(String key, float value) {
+        preferences.putFloat(key, value);
+        preferences.flush();
+        updateListeners(key, value);
+    }
+
+    protected float getFloat(String key, float defaultValue) {
+        return preferences.getFloat(key, defaultValue);
     }
 
     protected void setString(String key, String value) {

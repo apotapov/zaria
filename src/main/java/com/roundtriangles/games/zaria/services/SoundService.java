@@ -22,6 +22,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     boolean soundEnabled = true;
     boolean musicEnabled = true;
     boolean vibrateEnabled = true;
+    float volume = 1;
 
     AssetManager assetManager;
     List<String> soundEffects;
@@ -70,7 +71,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     public void playSound(String name) {
         if (soundEnabled) {
             if (assetManager.isLoaded(name)) {
-                assetManager.get(name, Sound.class).play();
+                assetManager.get(name, Sound.class).play(volume);
             }
         }
     }
@@ -84,6 +85,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
                 Music music = assetManager.get(name, Music.class);
                 music.setLooping(true);
                 if (musicEnabled) {
+                    music.setVolume(volume);
                     music.play();
                 }
                 currentMusic.music = music;
@@ -143,6 +145,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
             musicEnabled = value;
             if (currentMusic.music != null) {
                 if (musicEnabled) {
+                    currentMusic.music.setVolume(volume);
                     currentMusic.music.play();
                 } else {
                     currentMusic.music.stop();
@@ -164,5 +167,15 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
 
     @Override
     public void onFinishLoading() {
+    }
+
+    @Override
+    public void onPreferenceChange(String name, float value) {
+        if (name.equals(PreferenceService.PREF_VOLUME)) {
+            volume = value;
+            if (currentMusic.music != null) {
+                currentMusic.music.setVolume(value);
+            }
+        }
     }
 }
