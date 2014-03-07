@@ -235,7 +235,7 @@ public class GraphicsService implements IAssetBasedService {
                     generator = new FreeTypeFontGenerator(fontFile);
                     fontGenerators.put(fd.path, generator);
                 }
-                fontMap.put(fd, generator.generateFont(fd.size));
+                fontMap.put(fd, generator.generateFont(fd.parameter));
             }
         }
     }

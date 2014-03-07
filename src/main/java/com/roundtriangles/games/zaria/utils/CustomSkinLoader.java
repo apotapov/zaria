@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
@@ -36,7 +37,8 @@ public class CustomSkinLoader extends SkinLoader {
         @Override
         public BitmapFont read(Json json, JsonValue jsonData, Class type) {
             String path = json.readValue("file", String.class, jsonData);
-            int size = json.readValue("size", Integer.class, jsonData);
+            FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+            parameter.size = json.readValue("size", Integer.class, jsonData);
 
             try {
                 FreeTypeFontGenerator generator;
@@ -53,7 +55,7 @@ public class CustomSkinLoader extends SkinLoader {
                     generator = new FreeTypeFontGenerator(fontFile);
                     fontGenerators.put(path, generator);
                 }
-                return generator.generateFont(size);
+                return generator.generateFont(parameter);
             } catch (RuntimeException ex) {
                 throw new SerializationException("Error loading bitmap font: " + path, ex);
             }
