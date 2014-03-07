@@ -21,7 +21,7 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
             Image backgroundImage,
             float displayTime,
             float fadeTime) {
-        super(game, backgroundImage, 0);
+        super(game, backgroundImage, true, 0);
 
         this.assetLoader = assetLoader;
         this.nextScreen = nextScreen;
