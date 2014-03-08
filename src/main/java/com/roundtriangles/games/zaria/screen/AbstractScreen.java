@@ -3,6 +3,7 @@ package com.roundtriangles.games.zaria.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -64,13 +65,20 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
         setBackgroundImage(backgroundImage, false);
     }
 
-    public void switchScreen(Screen screen) {
+    public void switchScreen(final Screen screen) {
         if (fadeTime > 0) {
-            if (backgroundImage != null) {
-                backgroundImage.addAction(Actions.fadeOut(fadeTime));
-            }
+            stage.addAction(Actions.sequence(Actions.fadeOut(fadeTime),
+                    new Action() {
+
+                @Override
+                public boolean act(float delta) {
+                    game.setScreen(screen);
+                    return true;
+                }
+            }));
+        } else {
+            game.setScreen(screen);
         }
-        game.setScreen(screen);
     }
 
     public boolean back() {
@@ -117,9 +125,10 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
 
     @Override
     public void show() {
-        if (backgroundImage != null && fadeTime > 0) {
-            backgroundImage.getColor().a = 0;
-            backgroundImage.addAction(Actions.fadeIn(fadeTime));
+        if (fadeTime > 0) {
+            stage.addAction(Actions.fadeIn(fadeTime));
+        } else {
+            stage.addAction(Actions.show());
         }
         Gdx.input.setInputProcessor(stage);
     }

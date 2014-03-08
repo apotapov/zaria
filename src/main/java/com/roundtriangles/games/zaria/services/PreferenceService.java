@@ -44,10 +44,10 @@ public class PreferenceService implements Disposable {
     }
 
     public void initialize() {
-        setSoundEnabled(getBoolean(PREF_SOUND_ENABLED, DEFAULT_SOUND_ENABLED));
-        setMusicEnabled(getBoolean(PREF_MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED));
-        setMusicEnabled(getBoolean(PREF_VIBRATE_ENABLED, DEFAULT_VIBRATE_ENABLED));
-        setVolume(getFloat(PREF_VOLUME, defaultVolume));
+        updateListeners(PREF_SOUND_ENABLED, isSoundEnabled());
+        updateListeners(PREF_MUSIC_ENABLED, isMusicEnabled());
+        updateListeners(PREF_VIBRATE_ENABLED, isVibrateEnabled());
+        updateListeners(PREF_VOLUME, getVolume());
     }
 
     public void registerListener(PreferenceChangeListener listener) {
