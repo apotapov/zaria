@@ -140,20 +140,25 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     public void onPreferenceChange(String name, boolean value) {
         if (name.equals(PreferenceService.PREF_SOUND_ENABLED)) {
             soundEnabled = value;
+            changeMusicStatus(value);
         }
-        if (name.equals(PreferenceService.PREF_MUSIC_ENABLED)) {
-            musicEnabled = value;
-            if (currentMusic.music != null) {
-                if (musicEnabled) {
-                    currentMusic.music.setVolume(volume);
-                    currentMusic.music.play();
-                } else {
-                    currentMusic.music.stop();
-                }
-            }
+        if (name.equals(PreferenceService.PREF_MUSIC_ENABLED) && soundEnabled) {
+            changeMusicStatus(value);
         }
         if (name.equals(PreferenceService.PREF_VIBRATE_ENABLED)) {
             vibrateEnabled = value;
+        }
+    }
+
+    private void changeMusicStatus(boolean enable) {
+        musicEnabled = enable;
+        if (currentMusic.music != null) {
+            if (musicEnabled) {
+                currentMusic.music.setVolume(volume);
+                currentMusic.music.play();
+            } else {
+                currentMusic.music.stop();
+            }
         }
     }
 
