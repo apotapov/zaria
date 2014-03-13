@@ -14,21 +14,21 @@ import com.roundtriangles.games.zaria.services.PreferenceService.PreferenceChang
  */
 public class SoundService implements IAssetBasedService, PreferenceChangeListener {
 
-    static class NamedMusic {
+    protected static class NamedMusic {
         Music music;
         String name;
     }
 
-    boolean soundEnabled = true;
-    boolean musicEnabled = true;
-    boolean vibrateEnabled = true;
-    float volume = 1;
+    protected boolean soundEnabled = true;
+    protected boolean musicEnabled = true;
+    protected boolean vibrateEnabled = true;
+    protected float volume = 1;
 
-    AssetManager assetManager;
-    List<String> soundEffects;
-    List<String> backgroundMusic;
+    protected AssetManager assetManager;
+    protected List<String> soundEffects;
+    protected List<String> backgroundMusic;
 
-    NamedMusic currentMusic;
+    protected NamedMusic currentMusic;
 
     public SoundService() {
         soundEffects = new ArrayList<String>();
@@ -140,9 +140,8 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
     public void onPreferenceChange(String name, boolean value) {
         if (name.equals(PreferenceService.PREF_SOUND_ENABLED)) {
             soundEnabled = value;
-            changeMusicStatus(value);
         }
-        if (name.equals(PreferenceService.PREF_MUSIC_ENABLED) && soundEnabled) {
+        if (name.equals(PreferenceService.PREF_MUSIC_ENABLED)) {
             changeMusicStatus(value);
         }
         if (name.equals(PreferenceService.PREF_VIBRATE_ENABLED)) {
@@ -150,7 +149,7 @@ public class SoundService implements IAssetBasedService, PreferenceChangeListene
         }
     }
 
-    private void changeMusicStatus(boolean enable) {
+    protected void changeMusicStatus(boolean enable) {
         musicEnabled = enable;
         if (currentMusic.music != null) {
             if (musicEnabled) {

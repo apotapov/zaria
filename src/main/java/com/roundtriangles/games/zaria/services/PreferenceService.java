@@ -40,7 +40,6 @@ public class PreferenceService implements Disposable {
         for (PreferenceChangeListener listener : listeners) {
             registerListener(listener);
         }
-        initialize();
     }
 
     public void initialize() {
