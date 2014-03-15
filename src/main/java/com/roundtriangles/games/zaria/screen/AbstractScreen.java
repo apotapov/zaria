@@ -62,7 +62,7 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
     }
 
     public void setBackgroundImage(Image backgroundImage) {
-        setBackgroundImage(backgroundImage, false);
+        setBackgroundImage(backgroundImage, center);
     }
 
     public void switchScreen(final Screen screen) {

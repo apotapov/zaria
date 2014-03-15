@@ -13,7 +13,6 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
     protected GameAssetLoader assetLoader;
     protected AbstractScreen<T> nextScreen;
     protected float displayTime;
-    protected float fadeTime;
 
     public LoadingScreen(final T game,
             GameAssetLoader assetLoader,
@@ -21,21 +20,15 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
             Image backgroundImage,
             float displayTime,
             float fadeTime) {
-        super(game, backgroundImage, true, 0);
+        super(game, backgroundImage, true, fadeTime);
 
         this.assetLoader = assetLoader;
         this.nextScreen = nextScreen;
         this.displayTime = displayTime;
-        this.fadeTime = fadeTime;
-
-        initialize();
     }
 
     @Override
     public void initialize() {
-
-        backgroundImage.getColor().a = 0;
-
         RunnableAction loadingAction = new RunnableAction();
         loadingAction.setRunnable(new Runnable() {
             @Override
@@ -49,17 +42,15 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
         Action switchScreenAction = new Action() {
             @Override
             public boolean act(float delta) {
-                game.setScreen(nextScreen);
+                switchScreen(nextScreen);
                 return true;
             }
         };
 
         // configure the fade-in/out effect on the splash image
         SequenceAction actions = Actions.sequence(
-                Actions.fadeIn(fadeTime),
                 loadingAction,
                 Actions.delay(displayTime),
-                Actions.fadeOut(fadeTime),
                 switchScreenAction);
 
         backgroundImage.addAction(actions);
