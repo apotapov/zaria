@@ -25,7 +25,7 @@ public class PreferenceService implements Disposable {
 
     protected static final boolean DEFAULT_MUSIC_ENABLED = true;
     protected static final boolean DEFAULT_SOUND_ENABLED = true;
-    protected static final boolean DEFAULT_VIBRATE_ENABLED = true;
+    protected static final boolean DEFAULT_VIBRATE_ENABLED = false;
 
 
     Preferences preferences;
