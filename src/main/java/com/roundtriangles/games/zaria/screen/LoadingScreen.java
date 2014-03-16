@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.roundtriangles.games.zaria.AbstractGame;
 import com.roundtriangles.games.zaria.services.utils.GameAssetLoader;
 
-public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> {
+public abstract class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> {
 
     protected GameAssetLoader assetLoader;
     protected AbstractScreen<T> nextScreen;
@@ -28,7 +28,8 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
     }
 
     @Override
-    public void initialize() {
+    public void show() {
+        super.show();
         RunnableAction loadingAction = new RunnableAction();
         loadingAction.setRunnable(new Runnable() {
             @Override
@@ -49,10 +50,12 @@ public class LoadingScreen<T extends AbstractGame<?>> extends AbstractScreen<T> 
 
         // configure the fade-in/out effect on the splash image
         SequenceAction actions = Actions.sequence(
+                Actions.fadeIn(fadeTime),
                 loadingAction,
                 Actions.delay(displayTime),
                 switchScreenAction);
 
+        backgroundImage.getColor().a = 0;
         backgroundImage.addAction(actions);
     }
 }

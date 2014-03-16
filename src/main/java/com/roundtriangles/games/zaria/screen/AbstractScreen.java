@@ -26,6 +26,10 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
         this(game, null, null, false, fade);
     }
 
+    public AbstractScreen(T game, boolean center, float fade) {
+        this(game, null, null, center, fade);
+    }
+
     public AbstractScreen(T game, AbstractScreen<T> parentScreen, float fade) {
         this(game, parentScreen, null, false, fade);
     }
