@@ -36,28 +36,24 @@ public abstract class LevelService<T extends AbstractLevel> implements IAssetBas
 
     @Override
     public void finishedLoading (AssetManager assetManager, String fileName, Class type) {
-        levels = assetManager.get(levelDefinitionFile, Levels.class);
+        if (levels == null) {
+            levels = assetManager.get(levelDefinitionFile, Levels.class);
 
-        for (String levelFile : levels.levels) {
-            assetManager.load(levelFile, levelClass);
+            AssetLoaderParameters<T> parameter = new AssetLoaderParameters<T>();
+            parameter.loadedCallback = this;
+            for (String levelFile : levels.levels) {
+                assetManager.load(levelFile, levelClass, parameter);
+            }
+        } else {
+            if (levelList == null) {
+                levelList = new Array<T>();
+            }
+            T level = assetManager.get(fileName, levelClass);
+            levelList.add(level);
         }
     }
 
-    @SuppressWarnings("unchecked")
     public Array<T> getLevels() {
-        if (levelList == null) {
-            levelList = new Array<T>();
-            T previousLevel = null;
-            for (String levelFile : levels.levels) {
-                T level = assetManager.get(levelFile, levelClass);
-                if (previousLevel == null) {
-                    previousLevel = level;
-                } else {
-                    previousLevel.nextLevel = level;
-                }
-                levelList.add(level);
-            }
-        }
         return levelList;
     }
 
