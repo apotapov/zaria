@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <gdx.version>1.0-SNAPSHOT</gdx.version>
+        <gdx.version>1.0.0</gdx.version>
         <ormlite.version>4.47</ormlite.version>
     </properties>
 

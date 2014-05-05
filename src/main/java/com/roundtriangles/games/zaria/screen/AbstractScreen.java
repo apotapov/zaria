@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.roundtriangles.games.zaria.AbstractGame;
 
 public abstract class AbstractScreen<T extends AbstractGame<?>> implements Screen {
@@ -109,7 +110,8 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
 
     @Override
     public void resize(int width, int height) {
-        stage.setViewport(width, height, true);
+        Viewport viewPort = stage.getViewport();
+        viewPort.setWorldSize(width, height);
         if (backgroundImage != null) {
             float ratioDifference = (backgroundImage.getHeight() / backgroundImage.getWidth()) / (((float) height) / width);
 

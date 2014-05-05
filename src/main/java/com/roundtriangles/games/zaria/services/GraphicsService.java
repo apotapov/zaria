@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -172,12 +173,12 @@ public class GraphicsService implements IAssetBasedService {
         return spriteArray;
     }
 
-    public Animation getAnimation(String atlasName, String name, int playType, float duration) {
+    public Animation getAnimation(String atlasName, String name, PlayMode playMode, float duration) {
         Animation animation = null;
         if (!animationMap.containsKey(name)) {
             Array<Sprite> sprites = getSprites(atlasName, name);
             if (sprites != null) {
-                animation = new Animation(duration, sprites, playType);
+                animation = new Animation(duration, sprites, playMode);
                 animationMap.put(name, animation);
             }
         } else {
