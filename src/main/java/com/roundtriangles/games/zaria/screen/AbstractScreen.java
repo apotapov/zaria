@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.roundtriangles.games.zaria.AbstractGame;
 
@@ -103,8 +102,6 @@ public abstract class AbstractScreen<T extends AbstractGame<?>> implements Scree
 
             stage.act(delta);
             stage.draw();
-
-            Table.drawDebug(stage);
         }
     }
 
